@@ -1,0 +1,153 @@
+%% 学位类型选项（degree=...）：
+%%   AcMaster       — 学术型硕士学位（默认）
+%%   EnMaster       — 专业型硕士学位
+%%   Doctor         — 学术型博士学位
+%%   ProDoctor      — 专业型博士学位
+%% --------卓工专用--------
+%%   SpecialEnMaster — 工程硕博士培养改革专项试点·硕士专业学位
+%%   PracticeReport  — 工程硕博士培养改革专项试点·硕士专业学位实践成果总结报告
+%%
+%% 双面打印选项（twoside=true/false）
+%% 规范§3.18：正文60页以上用双面打印（twoside=true），60页以下用单面打印（twoside=false，默认）
+
+%% 示例（学博单面）：\documentclass[degree=Doctor]{BJTU-thesis}
+%% 示例（专项专硕双面）：\documentclass[degree=SpecialEnMaster,twoside]{BJTU-thesis}
+
+\documentclass[degree=AcMaster,twoside]{BJTU-thesis}
+
+%% ====================================================================
+%% 封面信息
+%% ====================================================================
+
+%% ---- 所有学位通用 ----
+\author{张三}                          %% 作者姓名
+\studentNumber{11111111}               %% 学号
+\advisor{李四}                         %% 导师姓名
+\advisorTitle{教授}                    %% 导师职称
+\datetime{2026年3月}                   %% 论文日期
+
+%% ---- 学硕（AcMaster）/ 学博（Doctor）专用 ----
+\degreeType{工学}                      %% 学位类别
+\major{网络空间安全}                   %% 学科专业
+\researchArea{软件安全}                %% 研究方向
+
+%% ---- 专业型硕士（EnMaster）/ 专业型博士（ProDoctor）专用 ----
+\engineeringMasterField{电子信息}      %% 专业学位类别（领域）
+
+%% ---- 论文题目（PracticeReport 使用下方实践成果题目，其余学位使用此处）----
+\title{论文题目}                       %% 中文题目
+\englishtitle{The Title in English.}  %% 英文题目
+
+%% =====================卓工专用==================================
+%% ---- 专项专硕（SpecialEnMaster / PracticeReport）专用 ----
+\company{某科技公司}                   %% 联合培养企业
+\keyField{人工智能}                    %% 关键领域
+\enterpriseAdvisor{王五}              %% 企业导师姓名
+\enterpriseAdvisorTitle{高级工程师}   %% 企业导师职称
+%% ---- 实践报告（PracticeReport）专用 ----
+\practiceTitle{实践成果题目}           %% 中文实践成果题目
+\englishPracticeTitle{Practice Title} %% 英文实践成果题目
+%% ====================================================================
+
+
+
+%% ====================================================================
+%% 双面排版辅助
+%% ====================================================================
+
+%% \myemptypage：插入一张空白页，用于双面印刷时凑偶数页
+%% 规范§3.18：空白页计入页码编号但不显示页码
+\newcommand\myemptypage{%
+    \newpage\thispagestyle{empty}\null\newpage
+}
+
+%% \openany：允许章节从任意页（奇/偶）开始，用于前置部分
+%% \openright：强制章节从奇数页（右页）开始，用于正文部分
+%% 单面模式下两者均为空操作（由 cls 自动处理）
+
+%% 允许页面底部不强制对齐，避免大段空白
+\raggedbottom
+
+%% ====================================================================
+%% 正文
+%% ====================================================================
+
+\begin{document}
+
+    %% ----------------------------------------------------------------
+    %% 前置部分（封面、授权书、题名页、致谢、摘要、目录）
+    %% 规范§3.18：前置部分页码用罗马数字，从题名页起单独编排
+    %% ----------------------------------------------------------------
+
+    \openany  %% 前置部分允许从任意页开始
+
+    \makecover        %% 外封（无页码）
+    \myemptypage
+
+    \makeAuthorization %% 版权使用授权书（cls 按学位类型自动选取内容）
+    \myemptypage
+
+    %% 企业评价意见：仅专项专硕（SpecialEnMaster）和实践报告（PracticeReport）使用
+    \makeatletter
+    \if@SpecialEnMaster \makeEvaluation\myemptypage\fi
+    \if@PracticeReport  \makeEvaluation\myemptypage\fi
+    \makeatother
+
+    \makeInfo         %% 题名页（内封，罗马页码从此页起）
+    \myemptypage
+
+    \include{chapters/acknowledgements}   %% 致谢
+    \myemptypage
+
+    \openright  %% 正文及后续章节从奇数页开始
+
+    \include{chapters/abstract}         %% 中文摘要
+    \include{chapters/abstract_en}      %% 英文摘要
+    \include{chapters/preface}         %% 序言（可选）
+
+    \tableofcontents        %% 目录（罗马页码）
+    \clearpage
+    \pagenumbering{arabic}  %% 正文页码改为阿拉伯数字，从1开始
+
+    %% ----------------------------------------------------------------
+    %% 正文章节
+    %% ----------------------------------------------------------------
+    
+    \include{chapters/chapter01}        %% 引言（绪论）
+    
+    \include{chapters/chapter_example}  %% 模板使用示例（提交前注释此行）
+    
+
+    \include{chapters/chapter02}
+    \include{chapters/chapter03}
+    \include{chapters/chapter04}
+    \include{chapters/chapter05}        %% 结论
+
+    %% ----------------------------------------------------------------
+    %% 后置部分
+    %% ----------------------------------------------------------------
+
+    %% 参考文献（\nocite{*} 列出所有文献，仅引用部分时可删除）
+    \nocite{*}
+    \printbibliography[heading=bibtoc, title=参考文献]
+
+    \backmatter
+
+    %% 附录（规范§3.12：依序用大写字母 A、B、C……编序号）
+    \appendix
+    \input{chapters/appendix01}
+
+    %% 索引（规范§3.13，可选）
+    %% 启用方法：取消下行注释，并在导言区加 \makeindex，正文中用 \index{} 标记词条
+    \include{chapters/index}
+
+    %% 作者简历与研究成果（规范§3.14）
+    \include{chapters/resume}
+
+    %% 独创性声明（规范§3.15，cls 按学位类型自动选取内容）
+    \makeStatement
+
+    %% 学位论文数据集（规范§3.16，如有）
+    \include{chapters/dataset}
+
+\end{document}

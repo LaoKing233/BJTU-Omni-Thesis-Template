@@ -1,0 +1,20 @@
+# LaTeX 编译中间文件
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# 编译产物（main.pdf 和 schoolName.pdf 保留，其余 PDF 忽略）
+*.pdf
+!main.pdf
+!schoolName.pdf
+
+# 字数统计输出
+outputs/*.wordcnt

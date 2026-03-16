@@ -1,0 +1,86 @@
+
+%% 规范§3.16：内容为五号宋体，行距16磅
+\makeatletter
+\if@PracticeReport
+    \chapter{实践成果数据集}\backmatterformat
+\else
+    \chapter{学位论文数据集}\backmatterformat
+\fi
+\makeatother
+
+\makeatletter
+\begin{table}[!h]
+{\zihao{5}\songti\linespread{1.0}\selectfont 表1.1：~数据集页}\\[3pt]
+\zihao{5}\songti\setlength{\baselineskip}{16pt}
+\renewcommand{\arraystretch}{1.24}  %% 行高 0.7cm（≈ 16pt × 1.24）
+\centering
+\begin{tabular}{|p{2.6cm}|p{2.6cm}|p{2.6cm}|p{2.92cm}|p{2.6cm}|}
+\hline
+关键词$^*$  & 密级$^*$ & 中图分类号 & UDC & 实践成果资助 \\
+\hline
+         & \BJTU@value@classification  &            &     &          \\
+\hline
+
+\multicolumn{2}{|p{5.4cm}|}{学位授予单位名称$^*$} & 学位授予单位代码$^*$ & 学位类别$^*$ &  学位级别$^*$    \\
+\hline
+\multicolumn{2}{|p{5.4cm}|}{北京交通大学}        &  10004               & \BJTU@value@degreeType  & \BJTU@value@degreeLevel  \\
+\hline
+
+\if@PracticeReport
+\multicolumn{2}{|p{5.4cm}|}{成果题名$^*$} & \multicolumn{2}{p{5.6cm}|}{并列题名} &  实践成果总结报告语种$^*$    \\
+\hline
+\multicolumn{2}{|p{5.4cm}|}{\BJTU@value@practiceTitle}  & \multicolumn{2}{p{5.6cm}|}{} & 中文  \\
+\else
+\multicolumn{2}{|p{5.4cm}|}{论文题名$^*$} & \multicolumn{2}{p{5.6cm}|}{并列题名} &  论文语种$^*$    \\
+\hline
+\multicolumn{2}{|p{5.4cm}|}{\BJTU@value@title}  & \multicolumn{2}{p{5.6cm}|}{} & 中文  \\
+\fi
+\hline
+
+作者姓名$^*$    &  \multicolumn{2}{p{5.4cm}|}{\BJTU@value@author}   & 学号$^*$  & \BJTU@value@studentNumber  \\
+\hline
+
+\multicolumn{2}{|p{5.4cm}|}{ 培养单位名称$^*$ }  &  培养单位代码$^*$   & 培养单位地址  &  邮编   \\
+\hline
+\multicolumn{2}{|p{5.4cm}|}{北京交通大学}  &  10004   & 北京市海淀区西直门外上园村3号  &  100044   \\
+\hline
+
+\if@EnMaster\multicolumn{2}{|p{5.4cm}|}{专业学位类别（领域）$^*$}\else
+\if@SpecialEnMaster\multicolumn{2}{|p{5.4cm}|}{专业学位类别（领域）$^*$}\else
+\if@PracticeReport\multicolumn{2}{|p{5.4cm}|}{专业学位类别（领域）$^*$}\else
+\multicolumn{2}{|p{5.4cm}|}{学科专业$^*$}\fi\fi\fi  &  研究方向$^*$   & 学制$^*$  & 学位授予年$^*$   \\
+\hline
+\if@EnMaster\multicolumn{2}{|p{5.4cm}|}{\BJTU@value@engineeringMasterField}\else
+\if@SpecialEnMaster\multicolumn{2}{|p{5.4cm}|}{\BJTU@value@engineeringMasterField}\else
+\if@PracticeReport\multicolumn{2}{|p{5.4cm}|}{\BJTU@value@engineeringMasterField}\else
+\multicolumn{2}{|p{5.4cm}|}{\BJTU@value@major}\fi\fi\fi  & \BJTU@value@researchArea  &           &      \\  %学制请手动填写
+\hline
+
+\if@PracticeReport 实践成果提交日期$^*$ \else 论文提交日期$^*$ \fi    & \multicolumn{4}{p{11.24cm}|}{\BJTU@label@datetime}   \\
+\hline
+
+导师姓名$^*$    &  \multicolumn{2}{p{5.4cm}|}{\BJTU@value@advisor}   & 职称$^*$  & \BJTU@value@advisorTitle  \\
+\hline
+
+评阅人  &  \multicolumn{2}{p{5.4cm}|}{ 答辩委员会主席$^*$ }   & \multicolumn{2}{p{5.6cm}|}{ 答辩委员会成员 } \\
+\hline
+        &  \multicolumn{2}{p{5.4cm}|}{\rule{0pt}{1.2cm}}   & \multicolumn{2}{p{5.6cm}|}{   } \\
+\hline
+
+\multicolumn{5}{|p{13.6cm}|}{ \if@PracticeReport 电子版报告提交格式\else 电子版论文提交格式\fi ~~ 文本（~）~ 图像（~）~ 视频（~）~ 音频（~）~ 多媒体（~）~ 其他（~）\newline
+推荐格式：application/msword；application/pdf }  \\
+\hline
+
+\multicolumn{2}{|p{5.4cm}|}{ \if@PracticeReport 电子版总结报告出版（发布）者\else 电子版论文出版（发布）者\fi } & \multicolumn{2}{p{5.6cm}|}{ \if@PracticeReport 电子版总结报告出版（发布）地\else 电子版论文出版（发布）地\fi } & 权限声明\\
+\hline
+\multicolumn{2}{|p{5.4cm}|}{   } & \multicolumn{2}{p{5.6cm}|}{   } &  \\  %对应上一行的标题填写：电子版论文出版（发布）者、发布地
+\hline
+
+\if@PracticeReport 报告总页数$^*$ \else 论文总页数$^*$ \fi    & \multicolumn{4}{c|}{  }   \\  %在对应空格上填写：页数
+\hline
+
+\multicolumn{5}{|p{13.6cm}|}{ 共33项，其中带$^*$为必填数据，为21项。 }  \\
+\hline
+\end{tabular}
+\end{table}
+\makeatother
