@@ -11,10 +11,11 @@
 *.synctex.gz
 *.toc
 
-# 编译产物（main.pdf 和 schoolName.pdf 保留，其余 PDF 忽略）
+# 编译产物（main.pdf、schoolName.pdf 和 figures/ 下的图片 PDF 保留，其余忽略）
 *.pdf
 !main.pdf
 !schoolName.pdf
+!figures/*.pdf
 
 # 字数统计输出
 outputs/*.wordcnt
