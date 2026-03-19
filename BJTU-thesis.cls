@@ -315,28 +315,22 @@
     \fi
 }
 
-%% 外封作者信息表
-%% 规范§3.1：外封包含作者姓名、导师姓名（四号宋体）
+%% 外封作者信息
+%% 规范§3.1：外封包含作者姓名、导师姓名（四号宋体），居中
 \newcommand{\BJTU@coverauthortable}{%
     \if@SpecialEnMaster
-        \begin{tabular}{l}
-            {\songti\zihao{4}\BJTU@label@author\BJTU@value@author}\\\\
-            {\songti\zihao{4}\BJTU@label@company\BJTU@value@company}\\\\
-            {\songti\zihao{4}校内导师：\BJTU@value@advisor}\\\\
-            {\songti\zihao{4}\BJTU@label@enterpriseAdvisor\BJTU@value@enterpriseAdvisor}\\
-        \end{tabular}
+        {\songti\zihao{4}\BJTU@label@author\BJTU@value@author}\\[10pt]
+        {\songti\zihao{4}\BJTU@label@company\BJTU@value@company}\\[10pt]
+        {\songti\zihao{4}校内导师：\BJTU@value@advisor}\\[10pt]
+        {\songti\zihao{4}\BJTU@label@enterpriseAdvisor\BJTU@value@enterpriseAdvisor}%
     \else\if@PracticeReport
-        \begin{tabular}{l}
-            {\songti\zihao{4}\BJTU@label@author\BJTU@value@author}\\\\
-            {\songti\zihao{4}\BJTU@label@company\BJTU@value@company}\\\\
-            {\songti\zihao{4}校内导师：\BJTU@value@advisor}\\\\
-            {\songti\zihao{4}\BJTU@label@enterpriseAdvisor\BJTU@value@enterpriseAdvisor}\\
-        \end{tabular}
+        {\songti\zihao{4}\BJTU@label@author\BJTU@value@author}\\[10pt]
+        {\songti\zihao{4}\BJTU@label@company\BJTU@value@company}\\[10pt]
+        {\songti\zihao{4}校内导师：\BJTU@value@advisor}\\[10pt]
+        {\songti\zihao{4}\BJTU@label@enterpriseAdvisor\BJTU@value@enterpriseAdvisor}%
     \else
-        \begin{tabular}{l}
-            {\songti\zihao{4}\BJTU@label@author\BJTU@value@author}\\\\
-            {\songti\zihao{4}\BJTU@label@advisor\BJTU@value@advisor}\\
-        \end{tabular}
+        {\songti\zihao{4}\BJTU@label@author\BJTU@value@author}\\[10pt]
+        {\songti\zihao{4}\BJTU@label@advisor\BJTU@value@advisor}%
     \fi\fi
 }
 
@@ -354,7 +348,7 @@
         \vspace{44pt}
         \BJTU@thesisbody
         \vspace{90pt}
-        \BJTU@coverauthortable\\
+        \BJTU@coverauthortable
         \vfill
         {\songti\zihao{4}北京交通大学\\\vspace{14pt}\BJTU@label@datetime}  %% 四号宋体
     \end{center}
@@ -366,62 +360,47 @@
 
 %% 内封信息表
 %% 规范§3.3：内封各项信息均为四号宋体
+\newlength{\BJTU@labelwidth}
+\newcommand{\BJTU@infocell}[3]{%
+    %% 单个信息格：标签正常输出，值放入 parbox，折行自动对齐到冒号后
+    %% #1=总宽度，#2=标签，#3=值
+    \settowidth{\BJTU@labelwidth}{#2}%
+    \leavevmode#2\parbox[t]{\dimexpr#1-\BJTU@labelwidth\relax}{#3}%
+}
+\newcommand{\BJTU@inforow}[4]{%
+    %% 普通学位：左右各占 0.5\textwidth
+    \BJTU@infocell{0.5\textwidth}{#1}{#2}\BJTU@infocell{0.5\textwidth}{#3}{#4}\\[10pt]
+}
+\newcommand{\BJTU@inforowwide}[4]{%
+    %% 专项专硕/实践报告：左列 0.55\textwidth，右列 0.4\textwidth，中间 0.05\textwidth 间距
+    \BJTU@infocell{0.55\textwidth}{#1}{#2}\hspace{0.05\textwidth}\BJTU@infocell{0.4\textwidth}{#3}{#4}\\[10pt]
+}
 \newcommand{\BJTU@infoauthortable}{%
     \if@SpecialEnMaster
-        \begin{tabular}{lp{30mm}l}
-            \BJTU@label@author\BJTU@value@author &&
-            \BJTU@label@studentNumber\BJTU@value@studentNumber\\\\
-            \BJTU@label@company\BJTU@value@company &&
-            \BJTU@label@keyField\BJTU@value@keyField\\\\
-            \BJTU@label@engineeringMasterField\BJTU@value@engineeringMasterField &&
-            \BJTU@label@degreeLevel\BJTU@value@degreeLevel\\\\
-            \BJTU@label@schoolAdvisor\BJTU@value@advisor &&
-            \BJTU@label@schoolAdvisorTitle\BJTU@value@advisorTitle\\\\
-            \BJTU@label@enterpriseAdvisor\BJTU@value@enterpriseAdvisor &&
-            \BJTU@label@enterpriseAdvisorTitle\BJTU@value@enterpriseAdvisorTitle\\
-        \end{tabular}
+        \BJTU@inforowwide{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforowwide{\BJTU@label@company}{\BJTU@value@company}{\BJTU@label@keyField}{\BJTU@value@keyField}
+        \BJTU@inforowwide{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
+        \BJTU@inforowwide{\BJTU@label@schoolAdvisor}{\BJTU@value@advisor}{\BJTU@label@schoolAdvisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforowwide{\BJTU@label@enterpriseAdvisor}{\BJTU@value@enterpriseAdvisor}{\BJTU@label@enterpriseAdvisorTitle}{\BJTU@value@enterpriseAdvisorTitle}
     \else\if@PracticeReport
-        \begin{tabular}{lp{30mm}l}
-            \BJTU@label@author\BJTU@value@author &&
-            \BJTU@label@studentNumber\BJTU@value@studentNumber\\\\
-            \BJTU@label@company\BJTU@value@company &&
-            \BJTU@label@keyField\BJTU@value@keyField\\\\
-            \BJTU@label@engineeringMasterField\BJTU@value@engineeringMasterField &&
-            \BJTU@label@degreeLevel\BJTU@value@degreeLevel\\\\
-            \BJTU@label@schoolAdvisor\BJTU@value@advisor &&
-            \BJTU@label@schoolAdvisorTitle\BJTU@value@advisorTitle\\\\
-            \BJTU@label@enterpriseAdvisor\BJTU@value@enterpriseAdvisor &&
-            \BJTU@label@enterpriseAdvisorTitle\BJTU@value@enterpriseAdvisorTitle\\
-        \end{tabular}
+        \BJTU@inforowwide{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforowwide{\BJTU@label@company}{\BJTU@value@company}{\BJTU@label@keyField}{\BJTU@value@keyField}
+        \BJTU@inforowwide{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
+        \BJTU@inforowwide{\BJTU@label@schoolAdvisor}{\BJTU@value@advisor}{\BJTU@label@schoolAdvisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforowwide{\BJTU@label@enterpriseAdvisor}{\BJTU@value@enterpriseAdvisor}{\BJTU@label@enterpriseAdvisorTitle}{\BJTU@value@enterpriseAdvisorTitle}
     \else\if@EnMaster
-        \begin{tabular}{lp{30mm}l}
-            \BJTU@label@author\BJTU@value@author &&
-            \BJTU@label@studentNumber\BJTU@value@studentNumber\\\\
-            \BJTU@label@advisor\BJTU@value@advisor &&
-            \BJTU@label@advisorTitle\BJTU@value@advisorTitle\\\\
-            \BJTU@label@engineeringMasterField\BJTU@value@engineeringMasterField &&
-            \BJTU@label@degreeLevel\BJTU@value@degreeLevel\\
-        \end{tabular}
+        \BJTU@inforow{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforow{\BJTU@label@advisor}{\BJTU@value@advisor}{\BJTU@label@advisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforow{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
     \else\if@ProDoctor
-        \begin{tabular}{lp{30mm}l}
-            \BJTU@label@author\BJTU@value@author &&
-            \BJTU@label@studentNumber\BJTU@value@studentNumber\\\\
-            \BJTU@label@advisor\BJTU@value@advisor &&
-            \BJTU@label@advisorTitle\BJTU@value@advisorTitle\\\\
-            \BJTU@label@engineeringMasterField\BJTU@value@engineeringMasterField &&
-            \BJTU@label@degreeLevel\BJTU@value@degreeLevel\\
-        \end{tabular}
+        \BJTU@inforow{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforow{\BJTU@label@advisor}{\BJTU@value@advisor}{\BJTU@label@advisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforow{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
     \else
-        \begin{tabular}{lp{30mm}l}
-            \BJTU@label@author\BJTU@value@author &&
-            \BJTU@label@studentNumber\BJTU@value@studentNumber\\\\
-            \BJTU@label@advisor\BJTU@value@advisor &&
-            \BJTU@label@advisorTitle\BJTU@value@advisorTitle\\\\
-            \BJTU@label@degreeType\BJTU@value@degreeType &&
-            \BJTU@label@degreeLevel\BJTU@value@degreeLevel\\\\
-            \BJTU@label@major\BJTU@value@major &&
-            \BJTU@label@researchArea\BJTU@value@researchArea\\
-        \end{tabular}
+        \BJTU@inforow{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforow{\BJTU@label@advisor}{\BJTU@value@advisor}{\BJTU@label@advisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforow{\BJTU@label@degreeType}{\BJTU@value@degreeType}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
+        \BJTU@inforow{\BJTU@label@major}{\BJTU@value@major}{\BJTU@label@researchArea}{\BJTU@value@researchArea}
     \fi\fi\fi\fi
 }
 
