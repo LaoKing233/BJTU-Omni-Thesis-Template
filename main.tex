@@ -9,9 +9,20 @@
 %%
 %% 双面打印选项（twoside=true/false）
 %% 规范§3.18：正文60页以上用双面打印（twoside=true），60页以下用单面打印（twoside=false，默认）
+%%
+%% 图表公式编号选项（NumberByChapter=true/false）
+%% 规范§3.10：图、表、公式编号含章号（默认 true），如图1-1、表2-3、（1-1）
+%% 设为 false 时全文连续编号，如图1、图2、（1）
+%%
+%% 盲审选项（BlindReview=true/false，默认 false）
+%% 开启后隐藏所有可识别作者身份的信息：
+%%   外封/内封隐藏校徽、校名、作者、学号、导师等；
+%%   版权授权书、企业评价意见、致谢、作者简历、独创性声明、论文数据集整页替换为空白
 
 %% 示例（学博单面）：\documentclass[degree=Doctor]{BJTU-thesis}
 %% 示例（专项专硕双面）：\documentclass[degree=SpecialEnMaster,twoside]{BJTU-thesis}
+%% 示例（关闭按章编号）：\documentclass[degree=AcMaster,NumberByChapter=false]{BJTU-thesis}
+%% 示例（盲审模式）：\documentclass[degree=AcMaster,BlindReview]{BJTU-thesis}
 
 \documentclass[degree=AcMaster,twoside]{BJTU-thesis}
 
@@ -84,20 +95,26 @@
     \makecover        %% 外封（无页码）
     \myemptypage
 
-    \makeAuthorization %% 版权使用授权书（cls 按学位类型自动选取内容）
-    \myemptypage
+    \makeatletter
+    \ifBJTU@BlindReview\else
+        \makeAuthorization %% 版权使用授权书（cls 按学位类型自动选取内容）
+        \myemptypage
+    \fi
 
     %% 企业评价意见：仅专项专硕（SpecialEnMaster）和实践报告（PracticeReport）使用
-    \makeatletter
-    \if@SpecialEnMaster \makeEvaluation\myemptypage\fi
-    \if@PracticeReport  \makeEvaluation\myemptypage\fi
+    \if@SpecialEnMaster \ifBJTU@BlindReview\else\makeEvaluation\myemptypage\fi\fi
+    \if@PracticeReport  \ifBJTU@BlindReview\else\makeEvaluation\myemptypage\fi\fi
     \makeatother
 
     \makeInfo         %% 题名页（内封，罗马页码从此页起）
     \myemptypage
 
-    \include{chapters/acknowledgements}   %% 致谢
-    \myemptypage
+    \makeatletter
+    \ifBJTU@BlindReview\else
+        \include{chapters/acknowledgements}   %% 致谢
+        \myemptypage
+    \fi
+    \makeatother
 
     \openright  %% 正文及后续章节从奇数页开始
 
@@ -127,8 +144,8 @@
     %% 后置部分
     %% ----------------------------------------------------------------
 
-    %% 参考文献（\nocite{*} 列出所有文献，仅引用部分时可删除）
-    \nocite{*}
+    %% 参考文献（只列出正文中实际引用的文献，按引用出现顺序排序）
+    %% 如需列出 bib 中所有文献（调试用），可临时加 \nocite{*}
     \printbibliography[heading=bibtoc, title=参考文献]
 
     \backmatter
@@ -142,12 +159,24 @@
     \include{chapters/index}
 
     %% 作者简历与研究成果（规范§3.14）
-    \include{chapters/resume}
+    \makeatletter
+    \ifBJTU@BlindReview\else
+        \include{chapters/resume}
+    \fi
+    \makeatother
 
     %% 独创性声明（规范§3.15，cls 按学位类型自动选取内容）
-    \makeStatement
+    \makeatletter
+    \ifBJTU@BlindReview\else
+        \makeStatement
+    \fi
+    \makeatother
 
     %% 学位论文数据集（规范§3.16，如有）
-    \include{chapters/dataset}
+    \makeatletter
+    \ifBJTU@BlindReview\else
+        \include{chapters/dataset}
+    \fi
+    \makeatother
 
 \end{document}

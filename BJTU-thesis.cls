@@ -31,6 +31,17 @@
 %% 规范§3.18：正文60页以上用双面打印（twoside=true），60页以下用单面打印（twoside=false，默认）
 \DeclareBoolOption[false]{twoside}
 
+%% 图表公式按章编号选项（NumberByChapter=true/false）
+%% 规范§3.10.4/3.10.5/3.10.12：图、表、公式编号含章号（默认），如图1-1、表2-3、（1-1）
+%% 设为 false 时全文连续编号，如图1、图2
+\DeclareBoolOption[true]{NumberByChapter}
+
+%% 盲审模式选项（BlindReview=true/false，默认 false）
+%% 开启后隐藏所有可识别作者身份的信息：
+%%   - 外封/内封：校徽、校名、作者姓名、学号、导师、企业导师（卓工）等替换为空白
+%%   - 整页隐藏：版权使用授权书、企业评价意见、致谢、作者简历、独创性声明、论文数据集
+\DeclareBoolOption[false]{BlindReview}
+
 \ProcessKeyvalOptions*
 
 %% 根据 twoside 选项加载基类
@@ -340,7 +351,11 @@
     \vspace{50pt}
     \begin{figure}
         \centering\vspace{60pt}
-        \includegraphics[width=10.77cm, height=2.78cm]{schoolName}
+        \ifBJTU@BlindReview
+            \vspace{2.78cm}  %% 盲审：以空白占位，保持版式
+        \else
+            \includegraphics[width=10.77cm, height=2.78cm]{schoolName}
+        \fi
     \end{figure}
     \vspace{18pt}
     \begin{center}
@@ -348,9 +363,15 @@
         \vspace{44pt}
         \BJTU@thesisbody
         \vspace{90pt}
-        \BJTU@coverauthortable
+        \ifBJTU@BlindReview\else
+            \BJTU@coverauthortable
+        \fi
         \vfill
-        {\songti\zihao{4}北京交通大学\\\vspace{14pt}\BJTU@label@datetime}  %% 四号宋体
+        \ifBJTU@BlindReview
+            \phantom{北京交通大学}\\\vspace{14pt}\BJTU@label@datetime  %% 盲审：隐藏校名
+        \else
+            {\songti\zihao{4}北京交通大学\\\vspace{14pt}\BJTU@label@datetime}  %% 四号宋体
+        \fi
     \end{center}
 }
 
@@ -368,26 +389,22 @@
     \leavevmode#2\parbox[t]{\dimexpr#1-\BJTU@labelwidth\relax}{#3}%
 }
 \newcommand{\BJTU@inforow}[4]{%
-    %% 普通学位：左右各占 0.5\textwidth
-    \BJTU@infocell{0.5\textwidth}{#1}{#2}\BJTU@infocell{0.5\textwidth}{#3}{#4}\\[10pt]
-}
-\newcommand{\BJTU@inforowwide}[4]{%
-    %% 专项专硕/实践报告：左列 0.55\textwidth，右列 0.4\textwidth，中间 0.05\textwidth 间距
+    %% 左列 0.55\textwidth，右列 0.4\textwidth，中间 0.05\textwidth 间距
     \BJTU@infocell{0.55\textwidth}{#1}{#2}\hspace{0.05\textwidth}\BJTU@infocell{0.4\textwidth}{#3}{#4}\\[10pt]
 }
 \newcommand{\BJTU@infoauthortable}{%
     \if@SpecialEnMaster
-        \BJTU@inforowwide{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
-        \BJTU@inforowwide{\BJTU@label@company}{\BJTU@value@company}{\BJTU@label@keyField}{\BJTU@value@keyField}
-        \BJTU@inforowwide{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
-        \BJTU@inforowwide{\BJTU@label@schoolAdvisor}{\BJTU@value@advisor}{\BJTU@label@schoolAdvisorTitle}{\BJTU@value@advisorTitle}
-        \BJTU@inforowwide{\BJTU@label@enterpriseAdvisor}{\BJTU@value@enterpriseAdvisor}{\BJTU@label@enterpriseAdvisorTitle}{\BJTU@value@enterpriseAdvisorTitle}
+        \BJTU@inforow{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforow{\BJTU@label@company}{\BJTU@value@company}{\BJTU@label@keyField}{\BJTU@value@keyField}
+        \BJTU@inforow{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
+        \BJTU@inforow{\BJTU@label@schoolAdvisor}{\BJTU@value@advisor}{\BJTU@label@schoolAdvisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforow{\BJTU@label@enterpriseAdvisor}{\BJTU@value@enterpriseAdvisor}{\BJTU@label@enterpriseAdvisorTitle}{\BJTU@value@enterpriseAdvisorTitle}
     \else\if@PracticeReport
-        \BJTU@inforowwide{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
-        \BJTU@inforowwide{\BJTU@label@company}{\BJTU@value@company}{\BJTU@label@keyField}{\BJTU@value@keyField}
-        \BJTU@inforowwide{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
-        \BJTU@inforowwide{\BJTU@label@schoolAdvisor}{\BJTU@value@advisor}{\BJTU@label@schoolAdvisorTitle}{\BJTU@value@advisorTitle}
-        \BJTU@inforowwide{\BJTU@label@enterpriseAdvisor}{\BJTU@value@enterpriseAdvisor}{\BJTU@label@enterpriseAdvisorTitle}{\BJTU@value@enterpriseAdvisorTitle}
+        \BJTU@inforow{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
+        \BJTU@inforow{\BJTU@label@company}{\BJTU@value@company}{\BJTU@label@keyField}{\BJTU@value@keyField}
+        \BJTU@inforow{\BJTU@label@engineeringMasterField}{\BJTU@value@engineeringMasterField}{\BJTU@label@degreeLevel}{\BJTU@value@degreeLevel}
+        \BJTU@inforow{\BJTU@label@schoolAdvisor}{\BJTU@value@advisor}{\BJTU@label@schoolAdvisorTitle}{\BJTU@value@advisorTitle}
+        \BJTU@inforow{\BJTU@label@enterpriseAdvisor}{\BJTU@value@enterpriseAdvisor}{\BJTU@label@enterpriseAdvisorTitle}{\BJTU@value@enterpriseAdvisorTitle}
     \else\if@EnMaster
         \BJTU@inforow{\BJTU@label@author}{\BJTU@value@author}{\BJTU@label@studentNumber}{\BJTU@value@studentNumber}
         \BJTU@inforow{\BJTU@label@advisor}{\BJTU@value@advisor}{\BJTU@label@advisorTitle}{\BJTU@value@advisorTitle}
@@ -413,16 +430,26 @@
     {\songti\zihao{5}\BJTU@label@classification\BJTU@value@classification}       %% 规范§3.3：密级五号宋体
     \vspace{31.5pt}
     \begin{center}
-        {\kaishu\zihao{0}\BJTU@ls{北京交通大学}\\}     %% 规范§3.3：初号楷体，居中，字间距加宽3磅
+        \ifBJTU@BlindReview
+            \phantom{北京交通大学}\\  %% 盲审：隐藏校名，保持版式
+        \else
+            {\kaishu\zihao{0}\BJTU@ls{北京交通大学}\\}  %% 规范§3.3：初号楷体，居中，字间距加宽3磅
+        \fi
         {\songti\zihao{2}\bfseries\BJTU@thesistitle\\} %% 规范§3.3：二号宋体加粗，居中
         \vspace{44pt}
         \BJTU@thesisbody
     \end{center}
     \vspace{48pt}
-    {\songti\zihao{4}\BJTU@infoauthortable}  %% 规范§3.3：各项信息四号宋体
+    \ifBJTU@BlindReview\else
+        {\songti\zihao{4}\BJTU@infoauthortable}  %% 规范§3.3：各项信息四号宋体
+    \fi
     \vfill
     \begin{center}
-        {\songti\zihao{4}北京交通大学\\\vspace{10pt}\BJTU@label@datetime}  %% 规范§3.3：四号宋体，居中
+        \ifBJTU@BlindReview
+            \phantom{北京交通大学}\\\vspace{10pt}\BJTU@label@datetime  %% 盲审：隐藏校名
+        \else
+            {\songti\zihao{4}北京交通大学\\\vspace{10pt}\BJTU@label@datetime}  %% 规范§3.3：四号宋体，居中
+        \fi
     \end{center}
 }
 
@@ -557,12 +584,13 @@
 %%   双面印制：偶数页居中为论文类型名，奇数页居中为各章章名
 %%   页眉字号为五号宋体，页眉之下有一条下划线（fancyhdr 默认有页眉线）
 \newcommand{\BJTU@headertitle}{%
-    \if@Doctor 北京交通大学博士学位论文\else
-    \if@ProDoctor 北京交通大学博士专业学位论文\else
-    \if@PracticeReport 北京交通大学硕士专业学位实践成果总结报告\else
-    \if@SpecialEnMaster 北京交通大学硕士专业学位论文\else
-    \if@AcMaster 北京交通大学硕士学位论文\else
-    北京交通大学硕士专业学位论文%
+    \ifBJTU@BlindReview\else 北京交通大学\fi
+    \if@Doctor 博士学位论文\else
+    \if@ProDoctor 博士专业学位论文\else
+    \if@PracticeReport 硕士专业学位实践成果总结报告\else
+    \if@SpecialEnMaster 硕士专业学位论文\else
+    \if@AcMaster 硕士学位论文\else
+    硕士专业学位论文%
     \fi\fi\fi\fi\fi
 }
 
@@ -649,10 +677,16 @@
 
 %% 规范§3.10.4/3.10.5：图、表编号格式为"章-序号"，如图1-1、表2-3
 %% 规范§3.10.12：公式编号格式为"（章-序号）"，如（1-1）
-%% 注：\renewcommand\thetable 须在 \numberwithin{table}{chapter} 之后执行，
-%%     否则 \numberwithin 会覆盖横线格式为"章.序号"（带点）
-\renewcommand\theequation{\arabic{chapter}-\arabic{equation}}
-\renewcommand\thefigure{\arabic{chapter}-\arabic{figure}}
+%% NumberByChapter=false 时全文连续编号，如图1、图2、（1）
+\ifBJTU@NumberByChapter
+    \renewcommand\theequation{\arabic{chapter}-\arabic{equation}}
+    \renewcommand\thefigure{\arabic{chapter}-\arabic{figure}}
+\else
+    \counterwithout{equation}{chapter}
+    \counterwithout{figure}{chapter}
+    \renewcommand\theequation{\arabic{equation}}
+    \renewcommand\thefigure{\arabic{figure}}
+\fi
 
 %% 浮动体参数放宽，减少图表孤立成页的情况
 \renewcommand{\textfraction}{0.15}
@@ -694,9 +728,15 @@
     font        = capfont,
 }
 \newcommand\thesubfigurenum{\alph{subfigure})} %% 供 \subfigcaption 调用，输出 a)、b)
-\numberwithin{table}{chapter}
-%% \numberwithin 会将 \thetable 重置为"章.序号"，在此处重新定义为"章-序号"
-\renewcommand\thetable{\arabic{chapter}-\arabic{table}}
+%% 注：\renewcommand\thetable 须在 \numberwithin 之后执行，
+%%     否则 \numberwithin 会将格式覆盖为"章.序号"（带点）
+\ifBJTU@NumberByChapter
+    \numberwithin{table}{chapter}
+    \renewcommand\thetable{\arabic{chapter}-\arabic{table}}
+\else
+    \counterwithout{table}{chapter}
+    \renewcommand\thetable{\arabic{table}}
+\fi
 
 %% 中英文对照题注辅助命令
 %% 规范§3.10.4/3.10.5：图题、表题采用中英文对照，中文在上，英文在下
