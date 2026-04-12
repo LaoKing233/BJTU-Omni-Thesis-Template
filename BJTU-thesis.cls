@@ -143,6 +143,7 @@
     gbalign    = left,
     gbbiblabel = bracket,
     natbib     = true,
+    gbnamefmt  = lowercase,  %% 保持 bib 中原始大小写，不强制全大写
 ]{biblatex}
 \addbibresource{reference/ref.bib}
 
@@ -702,7 +703,7 @@
 %% 规范§3.10.5：表题同图题，置于表的上方；图题置于图的下方
 \DeclareCaptionLabelSeparator{zhspace}{\hspace{1\ccwd}}
 %% 五号字（中文宋体由 ctex 隐式保证，英文 Times New Roman 由 setmainfont 保证）
-\DeclareCaptionFont{capfont}{\zihao{5}}
+\DeclareCaptionFont{capfont}{\zihao{5}\setlength{\baselineskip}{16pt}}  %% 规范§3.10.4/3.10.5：题注五号字，行距16磅
 \captionsetup{
     font          = capfont,
     labelsep      = zhspace,
