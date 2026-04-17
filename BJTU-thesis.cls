@@ -80,7 +80,8 @@
 %% ====================================================================
 
 %% 数学
-\RequirePackage{amsmath, amsthm, amsfonts, amssymb, bm, mathrsfs, upgreek}
+\RequirePackage{amsmath, amsthm, amssymb, bm, mathrsfs, upgreek}
+\RequirePackage{newtxmath}  %% 数学公式使用 Times New Roman 风格，与正文字体一致
 
 %% 字体与排版
 \RequirePackage{fontspec}
