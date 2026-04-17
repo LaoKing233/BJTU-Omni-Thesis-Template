@@ -140,12 +140,13 @@
 \RequirePackage[
     backend    = biber,
     style      = gb7714-2015,
-    gbalign    = left,
+    gbalign    = right,
     gbbiblabel = bracket,
     natbib     = true,
     gbnamefmt  = lowercase,  %% 保持 bib 中原始大小写，不强制全大写
 ]{biblatex}
 \addbibresource{reference/ref.bib}
+\AtBeginDocument{\setlength{\biblabelsep}{0.5em}}  %% 序号与文献内容间距约半个汉字宽
 
 %% 超链接（XeLaTeX 专用，无需引擎判断）
 \RequirePackage[
