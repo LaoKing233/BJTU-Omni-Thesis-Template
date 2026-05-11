@@ -1,4 +1,4 @@
-# File: word_count.ps1
+﻿# File: word_count.ps1
 # Usage: scripts\word_count.ps1
 # 统计正文字数（汉字 + 西文单词），递归展开所有 \include/\input 的章节文件
 
