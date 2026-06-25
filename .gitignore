@@ -17,5 +17,6 @@
 !schoolName.pdf
 !figures/*.pdf
 
-# 字数统计输出
+# 脚本输出（字数统计、参考文献导出）
 outputs/*.wordcnt
+outputs/references.txt
